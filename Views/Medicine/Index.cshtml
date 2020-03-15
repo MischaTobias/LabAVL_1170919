@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Database";
+}
+
+
+<h2>Welcome!</h2>
+<h4>Please enter the client information and upload the file with the medicines</h4>
+<p>Please ensure that you press the button "Upload" after selecting the file</p>
+@using (Html.BeginForm("Index", "Medicine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <br />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+}
