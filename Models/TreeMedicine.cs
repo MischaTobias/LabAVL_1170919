@@ -20,7 +20,7 @@ namespace LabAVL_1170919.Models
 
         public static Comparison<TreeMedicine> CompareByName = delegate (TreeMedicine med1, TreeMedicine med2)
         {
-            return med1.Name.CompareTo(med2.Name);
+            return med2.Name.CompareTo(med1.Name);
         };
 
         public int CompareTo(object obj)
