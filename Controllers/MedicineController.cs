@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace LabAVL_1170919.Controllers
 {
@@ -24,7 +25,10 @@ namespace LabAVL_1170919.Controllers
             {
                 StreamReader streamReader = new StreamReader(file.InputStream);
                 var line = streamReader.ReadLine();
-                line = streamReader.ReadLine();
+                if (line.Split(',')[0] == "id")
+                {
+                    line = streamReader.ReadLine();
+                }
                 var medicineData = new List<string>();
                 while (line != null)
                 {
@@ -43,7 +47,7 @@ namespace LabAVL_1170919.Controllers
                         {
                             if (comilla < 0)
                             {
-                                if (line.Contains('$'))
+                                if (line.IndexOf('$') < 1 && line.IndexOf('$') > -1)
                                 {
                                     line = line.Remove(0, 1);
                                 }
@@ -72,7 +76,6 @@ namespace LabAVL_1170919.Controllers
                             }
                         }
                     }
-
                     MedicineModel newMedicine = new MedicineModel
                     {
                         Id = int.Parse(medicineData[0]),
@@ -89,6 +92,9 @@ namespace LabAVL_1170919.Controllers
                         Name = medicineData[1],
                         Stock = int.Parse(medicineData[5])
                     };
+                    Storage.Instance.binaryTree.AddMedicine(medicineNode, TreeMedicine.CompareByName);
+                    line = streamReader.ReadLine();
+                    medicineData = new List<string>();
                 }
                 return RedirectToAction("ClientInfoInput");
             }
@@ -124,9 +130,17 @@ namespace LabAVL_1170919.Controllers
             }
         }
 
-        public ActionResult ShowMedList()
+        public ActionResult ShowMedList(int? page)
         {
-            return View();
+            var list = (Storage.Instance.binaryTree.GetList()).Select(x => x.Medicine);
+            if (Request.HttpMethod != "GET")
+            {
+                page = 1;
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
     }
 }

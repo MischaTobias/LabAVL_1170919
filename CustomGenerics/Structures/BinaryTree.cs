@@ -9,7 +9,7 @@ namespace CustomGenerics.Structures
 {
     public class BinaryTree<T> : IDataStructureBase<T>
     {
-        public BinaryTreeNode<T> root;
+        public BinaryTreeNode<T> root = null;
         private List<BinaryTreeNode<T>> returningList = new List<BinaryTreeNode<T>>();
 
         public void AddMedicine(T medicine, Comparison<T> comparison)
@@ -20,20 +20,30 @@ namespace CustomGenerics.Structures
 
         public void Insert(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> newNode, Comparison<T> comparison)
         {
-            if (currentNode == null)
+            if (root == null)
             {
-                currentNode = newNode;
+                root = newNode;
             }
-            else if (currentNode.LeftSon == null && currentNode.RightSon == null)
+            else if (comparison.Invoke(currentNode.Medicine, newNode.Medicine) < 0)
             {
-                newNode.Father = currentNode;
-                if (comparison.Invoke(currentNode.Medicine, newNode.Medicine) < 0)
+                if (currentNode.LeftSon == null)
                 {
                     currentNode.LeftSon = newNode;
                 }
                 else
                 {
+                    Insert(currentNode.LeftSon, newNode, comparison);
+                }
+            }
+            else
+            {
+                if (currentNode.RightSon == null)
+                {
                     currentNode.RightSon = newNode;
+                }
+                else
+                {
+                    Insert(currentNode.RightSon, newNode, comparison);
                 }
             }
         }
@@ -136,6 +146,7 @@ namespace CustomGenerics.Structures
 
         public List<BinaryTreeNode<T>> GetList()
         {
+            returningList = new List<BinaryTreeNode<T>>();
             InOrder(root);
             return returningList;
         }
