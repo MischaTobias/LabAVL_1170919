@@ -11,6 +11,5 @@ namespace CustomGenerics.Interfaces
     {
         void Insert(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> newNode, Comparison<T> comparison);
         void Delete(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> value, Comparison<T> comparison);
-        BinaryTreeNode<T> Search(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> medicine, Comparison<T> comparison);
     }
 }

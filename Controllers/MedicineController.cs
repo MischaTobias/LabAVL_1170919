@@ -130,9 +130,13 @@ namespace LabAVL_1170919.Controllers
             }
         }
 
-        public ActionResult ShowMedList(int? page)
+        public ActionResult ShowMedList(int? page, string search)
         {
             var list = (Storage.Instance.binaryTree.GetList()).Select(x => x.Medicine);
+            if (search != "" && search != null)
+            {
+                list = list.Where(x => x.Name.ToLower().Contains(search.ToLower()));
+            }
             if (Request.HttpMethod != "GET")
             {
                 page = 1;
