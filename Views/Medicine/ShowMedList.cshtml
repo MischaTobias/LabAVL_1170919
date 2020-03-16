@@ -7,6 +7,13 @@
 
 <h2>ShowMedList</h2>
 
+@using(Html.BeginForm("ShowMedList", "Medicine", FormMethod.Get)) {
+
+ @Html.TextBox("search") <input type = "submit"  
+    name = "submit"  
+    value = "Search"/>  
+}
+
 <table class="table">
     <tr>
         <th>
@@ -18,21 +25,22 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stock)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
 
@@ -42,9 +50,9 @@
 
     @if (Model.HasPreviousPage)
     {
-        @Html.ActionLink("<<", "ShowMedList", new { page = 1})
+        @Html.ActionLink("<<", "ShowMedList", new { page = 1 })
         @Html.Raw(" ");
-        @Html.ActionLink("< Prev", "ShowMedList", new { page = Model.PageNumber - 1})
+        @Html.ActionLink("< Prev", "ShowMedList", new { page = Model.PageNumber - 1 })
     }
     else
     {
@@ -55,7 +63,7 @@
 
     @if (Model.HasNextPage)
     {
-        @Html.ActionLink("Next >", "ShowMedList", new { page = Model.PageNumber + 1})
+        @Html.ActionLink("Next >", "ShowMedList", new { page = Model.PageNumber + 1 })
         @Html.Raw(" ");
         @Html.ActionLink(">>", "ShowMedList", new { page = Model.PageCount })
     }

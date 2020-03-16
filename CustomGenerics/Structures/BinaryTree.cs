@@ -121,29 +121,6 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public BinaryTreeNode<T> Search(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> medicine, Comparison<T> comparison)
-        {
-            if (comparison.Invoke(medicine.Medicine, currentNode.Medicine) < 0)
-            {
-                if (currentNode.LeftSon != null)
-                {
-                    return Search(currentNode.LeftSon, medicine, comparison);
-                }
-            }
-            else if (comparison.Invoke(medicine.Medicine, currentNode.Medicine) == 0)
-            {
-                return currentNode;
-            }
-            else
-            {
-                if (currentNode.RightSon != null)
-                {
-                    return Search(currentNode.RightSon, medicine, comparison);
-                }
-            }
-            return null;
-        }
-
         public List<BinaryTreeNode<T>> GetList()
         {
             returningList = new List<BinaryTreeNode<T>>();
