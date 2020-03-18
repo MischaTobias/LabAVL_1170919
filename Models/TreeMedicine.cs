@@ -7,13 +7,14 @@ namespace LabAVL_1170919.Models
 {
     public class TreeMedicine : IComparable
     {
+        public static int ID { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public int Stock { get; set; }
 
         public TreeMedicine()
         {
-            Id = 0;
+            Id = ID;
             Name = "";
             Stock = 0;
         }

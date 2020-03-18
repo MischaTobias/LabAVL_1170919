@@ -121,6 +121,28 @@ namespace CustomGenerics.Structures
             }
         }
 
+        public void TakeMed(T medicine, int quantity, Comparison<T> comparison)
+        {
+            BinaryTreeNode <T> node = new BinaryTreeNode<T> { Medicine = medicine, LeftSon = null, RightSon = null, Father = null };
+            MedReduction(root, node, quantity, comparison);
+        }
+
+        private void MedReduction(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> value, int quantity, Comparison<T> comparison)
+        {
+            if (comparison.Invoke(currentNode.Medicine, value.Medicine) < 0)
+            {
+                MedReduction(currentNode.LeftSon, value, quantity, comparison);
+            }
+            else if (comparison.Invoke(currentNode.Medicine, value.Medicine) == 0)
+            {
+                //Remove the quantity of the medicine
+            }
+            else
+            {
+                MedReduction(currentNode.RightSon, value, quantity, comparison);
+            }
+        }
+
         public List<BinaryTreeNode<T>> GetList()
         {
             returningList = new List<BinaryTreeNode<T>>();
