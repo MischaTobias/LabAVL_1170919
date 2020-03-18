@@ -146,5 +146,28 @@ namespace LabAVL_1170919.Controllers
             int pageNumber = (page ?? 1);
             return View(list.ToPagedList(pageNumber, pageSize));
         }
+
+        public ActionResult AddToCart(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddToCart(int id, FormCollection collection)
+        {
+            var med = ((Storage.Instance.binaryTree.GetList()).Where(x => x.Medicine.Id == id)).First();
+            if (int.Parse(collection["Stock"]) > med.Medicine.Id)
+            {
+                ModelState.AddModelError("Stock", "The quantity you want is more than what is in stock, please input a lower quantity");
+                return View("AddToCart");
+            }
+            else
+            {
+                ///quitar la cantidad propuesta a el medicamento en el árbol 
+                ///y mostrar la lista de nuevo (además de añadir el medicamento al usuario)
+                
+                return RedirectToAction("ShowMedList");
+            }
+        }
     }
 }
