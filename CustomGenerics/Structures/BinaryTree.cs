@@ -180,5 +180,31 @@ namespace CustomGenerics.Structures
                 InOrder(currentNode.RightSon);
             }
         }
+
+        public void PostOrder(BinaryTreeNode<T> currentNode)
+        {
+            if (currentNode.LeftSon != null)
+            {
+                PostOrder(currentNode.LeftSon);
+            }
+            if (currentNode.RightSon != null)
+            {
+                PostOrder(currentNode.RightSon);
+            }
+            returningList.Add(currentNode);
+        }
+
+        public void PreOrder(BinaryTreeNode<T> currentNode)
+        {
+            returningList.Add(currentNode);
+            if (currentNode.LeftSon != null)
+            {
+                PreOrder(currentNode.LeftSon);
+            }
+            if (currentNode.RightSon != null)
+            {
+                PreOrder(currentNode.RightSon);
+            }
+        }
     }
 }
