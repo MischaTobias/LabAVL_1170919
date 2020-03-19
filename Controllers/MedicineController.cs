@@ -155,19 +155,39 @@ namespace LabAVL_1170919.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id, FormCollection collection)
         {
-            var med = ((Storage.Instance.binaryTree.GetList()).Where(x => x.Medicine.Id == id)).First();
-            if (int.Parse(collection["Stock"]) > med.Medicine.Id)
+            var med = Storage.Instance.medicineList[id - 1].Stock;
+            var ordered = int.Parse(collection["Stock"]);
+            if (ordered > med)
             {
                 ModelState.AddModelError("Stock", "The quantity you want is more than what is in stock, please input a lower quantity");
                 return View("AddToCart");
             }
+            else if (ordered == med)
+            {
+                Storage.Instance.medicineList[id - 1].Stock = 0;
+                CustomGenerics.Structures.BinaryTreeNode<TreeMedicine> node = new CustomGenerics.Structures.BinaryTreeNode<TreeMedicine>()
+                { Father = null, LeftSon = null, RightSon = null, Medicine = Storage.Instance.medicineList[id - 1] };
+                Storage.Instance.binaryTree.Delete(Storage.Instance.binaryTree.root, node, TreeMedicine.CompareByName);
+            }
             else
             {
-                ///quitar la cantidad propuesta a el medicamento en el árbol 
-                ///y mostrar la lista de nuevo (además de añadir el medicamento al usuario)
-                
-                return RedirectToAction("ShowMedList");
+                Storage.Instance.medicineList[id - 1].Stock = med - ordered;
+                TreeMedicine medicine = new TreeMedicine()
+                {
+                    Id = id,
+                    Name = Storage.Instance.medicineList[id - 1].Name,
+                    Stock = Storage.Instance.medicineList[id - 1].Stock
+                };
+                Storage.Instance.binaryTree.TakeMed(medicine, TreeMedicine.CompareByName);
             }
+            TreeMedicine newmedicine = new TreeMedicine()
+            {
+                Id = Storage.Instance.medicineList[id - 1].Id,
+                Name = Storage.Instance.medicineList[id - 1].Name,
+                Stock = ordered
+            };
+            Storage.Instance.client.Medicines.Add(newmedicine);
+            return RedirectToAction("ShowMedList");
         }
     }
 }

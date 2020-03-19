@@ -10,7 +10,7 @@ namespace LabAVL_1170919.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public string Nit { get; set; }
-        public List<MedicineModel> Medicines { get; set; }
+        public List<TreeMedicine> Medicines { get; set; }
         public double Debt { get; set; }
 
         public Client()

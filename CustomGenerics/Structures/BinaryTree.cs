@@ -29,6 +29,7 @@ namespace CustomGenerics.Structures
                 if (currentNode.LeftSon == null)
                 {
                     currentNode.LeftSon = newNode;
+                    currentNode.LeftSon.Father = currentNode;
                 }
                 else
                 {
@@ -40,6 +41,7 @@ namespace CustomGenerics.Structures
                 if (currentNode.RightSon == null)
                 {
                     currentNode.RightSon = newNode;
+                    currentNode.RightSon.Father = newNode;
                 }
                 else
                 {
@@ -57,17 +59,27 @@ namespace CustomGenerics.Structures
                 if (currentNode.LeftSon != null)
                 {
                     currentNode = GetReplacementLeft(currentNode.LeftSon);
+                    currentNode.RightSon = right;
+                    currentNode.LeftSon = left;
                 }
                 else if (currentNode.RightSon != null)
                 {
                     currentNode = GetReplacementRight(currentNode.RightSon);
+                    currentNode.RightSon = right;
+                    currentNode.LeftSon = left;
                 }
                 else
                 {
-                    currentNode = null;
+                    var compareNode = currentNode;
+                    if (currentNode.Father.LeftSon == compareNode)
+                    {
+                        currentNode.Father.LeftSon = null;
+                    }
+                    else
+                    {
+                        currentNode.Father.RightSon = null;
+                    }
                 }
-                currentNode.RightSon = right;
-                currentNode.LeftSon = left;
             }
             else if (comparison.Invoke(currentNode.Medicine, value.Medicine) < 0)
             {
@@ -87,6 +99,9 @@ namespace CustomGenerics.Structures
             }
             else
             {
+                var returningNode = currentNode;
+                returningNode.LeftSon = null;
+                returningNode.RightSon = null;
                 if (currentNode.LeftSon != null)
                 {
                     (currentNode.Father).RightSon = currentNode.LeftSon;
@@ -96,7 +111,7 @@ namespace CustomGenerics.Structures
                 {
                     (currentNode.Father).RightSon = null;
                 }
-                return currentNode;
+                return returningNode;
             }
         }
 
@@ -108,6 +123,9 @@ namespace CustomGenerics.Structures
             }
             else
             {
+                var returningNode = currentNode;
+                returningNode.LeftSon = null;
+                returningNode.RightSon = null;
                 if (currentNode.RightSon != null)
                 {
                     (currentNode.Father).LeftSon = currentNode.RightSon;
@@ -117,29 +135,29 @@ namespace CustomGenerics.Structures
                 {
                     (currentNode.Father).LeftSon = null;
                 }
-                return currentNode;
+                return returningNode;
             }
         }
 
-        public void TakeMed(T medicine, int quantity, Comparison<T> comparison)
+        public void TakeMed(T value, Comparison<T> comparison)
         {
-            BinaryTreeNode <T> node = new BinaryTreeNode<T> { Medicine = medicine, LeftSon = null, RightSon = null, Father = null };
-            MedReduction(root, node, quantity, comparison);
+            BinaryTreeNode<T> node = new BinaryTreeNode<T> { Medicine = value, Father = null, LeftSon = null, RightSon = null };
+            ReduceStock(root, node, comparison);
         }
 
-        private void MedReduction(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> value, int quantity, Comparison<T> comparison)
+        private void ReduceStock(BinaryTreeNode<T> currentNode, BinaryTreeNode<T> value, Comparison<T> comparison)
         {
             if (comparison.Invoke(currentNode.Medicine, value.Medicine) < 0)
             {
-                MedReduction(currentNode.LeftSon, value, quantity, comparison);
+                ReduceStock(currentNode.LeftSon, value, comparison);
             }
             else if (comparison.Invoke(currentNode.Medicine, value.Medicine) == 0)
             {
-                //Remove the quantity of the medicine
+                currentNode.Medicine = value.Medicine;
             }
             else
             {
-                MedReduction(currentNode.RightSon, value, quantity, comparison);
+                ReduceStock(currentNode.RightSon, value, comparison);
             }
         }
 
