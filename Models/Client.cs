@@ -18,7 +18,7 @@ namespace LabAVL_1170919.Models
             Name = "";
             Address = "";
             Nit = "";
-            Medicines = null;
+            Medicines = new List<TreeMedicine>();
             Debt = 0;
         }
     }
