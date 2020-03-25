@@ -130,12 +130,14 @@ namespace LabAVL_1170919.Controllers
             }
         }
 
-        public ActionResult ShowMedList(int? page, string search)
+        public ActionResult ShowMedList(int? page, string search, int? pathing)
         {
-            var list = (Storage.Instance.binaryTree.GetList()).Select(x => x.Medicine);
+            int path = (pathing ?? 1);
+            var list = (Storage.Instance.binaryTree.GetList(path)).Select(x => x.Medicine).ToList();
+
             if (search != "" && search != null)
             {
-                list = list.Where(x => x.Name.ToLower().Contains(search.ToLower()));
+                list = list.Where(x => x.Name.ToLower().Contains(search.ToLower())).ToList();
             }
             if (Request.HttpMethod != "GET")
             {
@@ -187,6 +189,7 @@ namespace LabAVL_1170919.Controllers
                 Stock = ordered
             };
             Storage.Instance.client.Medicines.Add(newmedicine);
+            Storage.Instance.client.Debt += Storage.Instance.medicineList[id - 1].Price * ordered;  
             return RedirectToAction("ShowMedList");
         }
     }
