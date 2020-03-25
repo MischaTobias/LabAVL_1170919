@@ -246,10 +246,21 @@ namespace CustomGenerics.Structures
             }
         }
 
-        public List<BinaryTreeNode<T>> GetList()
+        public List<BinaryTreeNode<T>> GetList(int pathing)
         {
             returningList = new List<BinaryTreeNode<T>>();
-            InOrder(root);
+            switch (pathing)
+            {
+                case 1:
+                    InOrder(root);
+                    break;
+                case 2:
+                    PreOrder(root);
+                    break;
+                case 3:
+                    PostOrder(root);
+                    break;
+            }
             return returningList;
         }
 

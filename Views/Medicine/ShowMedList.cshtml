@@ -2,11 +2,25 @@
 @model PagedList.IPagedList<LabAVL_1170919.Models.TreeMedicine>
 
 @{
-    ViewBag.Title = "ShowMedList";
+    ViewBag.Title = "Medicines List";
 }
 
-<h2>ShowMedList</h2>
+<h2>Medicines List</h2>
 
+<div>
+    <h5><strong>User Settings</strong></h5>
+    @Html.ActionLink("User Info", "Pending procedure") | @Html.ActionLink("Change user (Create another order)", "Pending procedure")
+</div>
+
+<div>
+    <h5><strong>Tree Pathing</strong></h5>
+    @Html.ActionLink("InOrder (Alphabetical)", "ShowMedList", new { pathing = 1 }) |
+    @Html.ActionLink("PreOrder", "ShowMedList", new { pathing = 2 }) |
+    @Html.ActionLink("PostOrder", "ShowMedList", new { pathing = 3 })
+</div>
+
+<h5><strong>Medicine Search</strong></h5>
+<p>Please enter the name of the medicine you are looking for and press "submit"</p>
 @using(Html.BeginForm("ShowMedList", "Medicine", FormMethod.Get)) {
 
  @Html.TextBox("search") <input type = "submit"  
