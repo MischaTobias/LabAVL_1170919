@@ -21,7 +21,14 @@ namespace CustomGenerics.Structures
             }
             else if (this.LeftSon == null)
             {
-                return this.RightSon.GetTreeHeight();
+                if (this.RightSon == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return this.RightSon.GetTreeHeight();
+                }
             }
             else
             {
