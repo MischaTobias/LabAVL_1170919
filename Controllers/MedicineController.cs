@@ -121,7 +121,7 @@ namespace LabAVL_1170919.Controllers
                     Address = collection["Address"],
                     Nit = collection["Nit"]
                 };
-                Storage.Instance.client = newClient;
+                Storage.Instance.clients.Add(newClient.Name, newClient);
                 return RedirectToAction("ShowMedList");
             }
             catch
@@ -188,8 +188,8 @@ namespace LabAVL_1170919.Controllers
                 Name = Storage.Instance.medicineList[id - 1].Name,
                 Stock = ordered
             };
-            Storage.Instance.client.Medicines.Add(newmedicine);
-            Storage.Instance.client.Debt += Storage.Instance.medicineList[id - 1].Price * ordered;  
+            Storage.Instance.clients[Storage.Instance.actualClient].Medicines.Add(newmedicine);
+            Storage.Instance.clients[Storage.Instance.actualClient].Debt += Storage.Instance.medicineList[id - 1].Price * ordered;  
             return RedirectToAction("ShowMedList");
         }
     }

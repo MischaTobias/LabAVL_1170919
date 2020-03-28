@@ -5,7 +5,7 @@ using System.Web;
 
 namespace LabAVL_1170919.Models
 {
-    public class TreeMedicine 
+    public class TreeMedicine
     {
         public static int ID { get; set; }
         public int Id { get; set; }
