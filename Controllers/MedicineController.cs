@@ -122,6 +122,7 @@ namespace LabAVL_1170919.Controllers
                     Nit = collection["Nit"]
                 };
                 Storage.Instance.orders.Add(newClient.Name, newClient);
+                Storage.Instance.actualClient = newClient.Name;
                 return RedirectToAction("ShowMedList");
             }
             catch
