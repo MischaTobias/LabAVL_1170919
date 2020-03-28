@@ -21,7 +21,7 @@ namespace LabAVL_1170919.Helpers
         }
         public BinaryTree<TreeMedicine> binaryTree = new BinaryTree<TreeMedicine>();
         public List<MedicineModel> medicineList = new List<MedicineModel>();
-        public Dictionary<string, Client> clients = new Dictionary<string, Client>();
+        public Dictionary<string, Client> orders = new Dictionary<string, Client>();
         public string actualClient;
     }
 }
