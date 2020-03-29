@@ -111,18 +111,30 @@ namespace LabAVL_1170919.Controllers
         }
 
         [HttpPost]
-        public ActionResult ClientInfoInput(FormCollection collection)
+        public ActionResult ClientInfoInput(FormCollection collection, bool? firstUser)
         {
             try
             {
-                Client newClient = new Client()
+                bool isfirst = (firstUser ?? true);
+                if (!isfirst)
                 {
-                    Name = collection["Name"],
-                    Address = collection["Address"],
-                    Nit = collection["Nit"]
-                };
-                Storage.Instance.orders.Add(newClient.Name, newClient);
-                Storage.Instance.actualClient = newClient.Name;
+                    //restock
+                }
+                if (Storage.Instance.orders.ContainsKey(collection["Name"]))
+                {
+                    Storage.Instance.actualClient = collection["Name"];
+                }
+                else
+                {
+                    Client newClient = new Client()
+                    {
+                        Name = collection["Name"],
+                        Address = collection["Address"],
+                        Nit = collection["Nit"]
+                    };
+                    Storage.Instance.orders.Add(newClient.Name, newClient);
+                    Storage.Instance.actualClient = newClient.Name;
+                }
                 return RedirectToAction("ShowMedList");
             }
             catch
@@ -159,7 +171,7 @@ namespace LabAVL_1170919.Controllers
         public ActionResult AddToCart(int id, FormCollection collection)
         {
             var med = Storage.Instance.medicineList[id - 1].Stock;
-            if (collection["Stock"] == null)
+            if (collection["Stock"] == "")
             {
                 ModelState.AddModelError("Stock", "Please enter a number of medicines you would like to order");
                 return View("AddToCart");
