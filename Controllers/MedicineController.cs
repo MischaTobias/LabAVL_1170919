@@ -115,19 +115,51 @@ namespace LabAVL_1170919.Controllers
         {
             try
             {
-                Client newClient = new Client()
+                if (Storage.Instance.orders.ContainsKey(collection["Name"]))
                 {
-                    Name = collection["Name"],
-                    Address = collection["Address"],
-                    Nit = collection["Nit"]
-                };
-                Storage.Instance.orders.Add(newClient.Name, newClient);
-                Storage.Instance.actualClient = newClient.Name;
+                    Storage.Instance.actualClient = collection["Name"];
+                }
+                else
+                {
+                    Restock();
+                    Client newClient = new Client()
+                    {
+                        Name = collection["Name"],
+                        Address = collection["Address"],
+                        Nit = collection["Nit"]
+                    };
+                    Storage.Instance.orders.Add(newClient.Name, newClient);
+                    Storage.Instance.actualClient = newClient.Name;
+                }
                 return RedirectToAction("ShowMedList");
             }
             catch
             {
                 return View();
+            }
+        }
+
+        private void Restock()
+        {
+            Random random = new Random();
+            var newStock = random.Next() % 15;
+            foreach (var med in Storage.Instance.medicineList)
+            {
+                if (med.Stock == 0)
+                {
+                    while (newStock == 0)
+                    {
+                        newStock = random.Next() % 15;
+                    }
+                    med.Stock = newStock;
+                    TreeMedicine medicine = new TreeMedicine()
+                    {
+                        Id = med.Id,
+                        Name = med.Name,
+                        Stock = newStock
+                    };
+                    Storage.Instance.binaryTree.AddMedicine(medicine, TreeMedicine.CompareByName);
+                }
             }
         }
 
@@ -159,6 +191,11 @@ namespace LabAVL_1170919.Controllers
         public ActionResult AddToCart(int id, FormCollection collection)
         {
             var med = Storage.Instance.medicineList[id - 1].Stock;
+            if (collection["Stock"] == "")
+            {
+                ModelState.AddModelError("Stock", "Please enter a number of medicines you would like to order");
+                return View("AddToCart");
+            }
             var ordered = int.Parse(collection["Stock"]);
             if (ordered > med)
             {
@@ -192,6 +229,11 @@ namespace LabAVL_1170919.Controllers
             Storage.Instance.orders[Storage.Instance.actualClient].Medicines.Add(newmedicine);
             Storage.Instance.orders[Storage.Instance.actualClient].Debt += Storage.Instance.medicineList[id - 1].Price * ordered;  
             return RedirectToAction("ShowMedList");
+        }
+
+        public ActionResult ShowOrder()
+        {
+            return View();
         }
     }
 }
