@@ -233,7 +233,7 @@ namespace LabAVL_1170919.Controllers
 
         public ActionResult ShowOrder()
         {
-            return View();
+            return View(Storage.Instance.orders[Storage.Instance.actualClient]);
         }
     }
 }

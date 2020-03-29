@@ -170,6 +170,7 @@
     <Content Include="Views\Medicine\ClientInfoInput.cshtml" />
     <Content Include="Views\Medicine\ShowMedList.cshtml" />
     <Content Include="Views\Medicine\AddToCart.cshtml" />
+    <Content Include="Views\Medicine\ShowOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
