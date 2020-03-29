@@ -159,6 +159,11 @@ namespace LabAVL_1170919.Controllers
         public ActionResult AddToCart(int id, FormCollection collection)
         {
             var med = Storage.Instance.medicineList[id - 1].Stock;
+            if (collection["Stock"] == null)
+            {
+                ModelState.AddModelError("Stock", "Please enter a number of medicines you would like to order");
+                return View("AddToCart");
+            }
             var ordered = int.Parse(collection["Stock"]);
             if (ordered > med)
             {
