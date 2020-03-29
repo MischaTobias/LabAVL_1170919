@@ -111,21 +111,17 @@ namespace LabAVL_1170919.Controllers
         }
 
         [HttpPost]
-        public ActionResult ClientInfoInput(FormCollection collection, bool? firstUser)
+        public ActionResult ClientInfoInput(FormCollection collection)
         {
             try
             {
-                bool isfirst = (firstUser ?? true);
-                if (!isfirst)
-                {
-                    //restock
-                }
                 if (Storage.Instance.orders.ContainsKey(collection["Name"]))
                 {
                     Storage.Instance.actualClient = collection["Name"];
                 }
                 else
                 {
+                    Restock();
                     Client newClient = new Client()
                     {
                         Name = collection["Name"],
@@ -140,6 +136,30 @@ namespace LabAVL_1170919.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        private void Restock()
+        {
+            Random random = new Random();
+            var newStock = random.Next() % 15;
+            foreach (var med in Storage.Instance.medicineList)
+            {
+                if (med.Stock == 0)
+                {
+                    while (newStock == 0)
+                    {
+                        newStock = random.Next() % 15;
+                    }
+                    med.Stock = newStock;
+                    TreeMedicine medicine = new TreeMedicine()
+                    {
+                        Id = med.Id,
+                        Name = med.Name,
+                        Stock = newStock
+                    };
+                    Storage.Instance.binaryTree.AddMedicine(medicine, TreeMedicine.CompareByName);
+                }
             }
         }
 
@@ -209,6 +229,11 @@ namespace LabAVL_1170919.Controllers
             Storage.Instance.orders[Storage.Instance.actualClient].Medicines.Add(newmedicine);
             Storage.Instance.orders[Storage.Instance.actualClient].Debt += Storage.Instance.medicineList[id - 1].Price * ordered;  
             return RedirectToAction("ShowMedList");
+        }
+
+        public ActionResult ShowOrder()
+        {
+            return View();
         }
     }
 }
