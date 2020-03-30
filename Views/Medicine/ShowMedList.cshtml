@@ -8,11 +8,6 @@
 <h2>Medicines List</h2>
 
 <div>
-    <h5><strong>User Settings</strong></h5>
-    @Html.ActionLink("Checkout", "ShowOrder") | @Html.ActionLink("Change user (Create another order)", "ClientInfoInput")
-</div>
-
-<div>
     <h5><strong>Tree Pathing</strong></h5>
     @Html.ActionLink("InOrder (Alphabetical)", "ShowMedList", new { pathing = 1 }) |
     @Html.ActionLink("PreOrder", "ShowMedList", new { pathing = 2 }) |

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using System.Text;
 
 namespace LabAVL_1170919.Controllers
 {
@@ -23,7 +24,8 @@ namespace LabAVL_1170919.Controllers
         {
             try
             {
-                StreamReader streamReader = new StreamReader(file.InputStream);
+                Storage.Instance.file = file;
+                StreamReader streamReader = new StreamReader(Storage.Instance.file.InputStream);
                 var line = streamReader.ReadLine();
                 if (line.Split(',')[0] == "id")
                 {
@@ -255,22 +257,20 @@ namespace LabAVL_1170919.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Close(HttpPostedFileBase file)
+        public FileResult Export()
         {
-            StreamWriter streamWriter = new StreamWriter(file.FileName);
-            //sobreescribir las cosas
-            string line = "";
+            var data = new StringBuilder();
+            data.AppendLine("Id,Name,Description,Producer,Price,Stock");
             foreach (var med in Storage.Instance.medicineList)
             {
-                line = med.Id + "," + med.Name + "," + med.Description + "," + med.Producer + "," + med.Price + "," + med.Stock;
+                data.AppendLine(med.Id + "," + med.Name + "," + med.Description + "," + med.Producer + "," + med.Price + "," + med.Stock);
             }
-            streamWriter.Close();
-            return Content(@"<body>
-                       <script type='text/javascript'>
-                         window.close();
-                       </script>
-                     </body> ");
+            return File(Encoding.UTF8.GetBytes(data.ToString()), "text/csv", "NewInventory.csv");
+        }
+
+        public ActionResult End()
+        {
+            return View();
         }
     }
 }
