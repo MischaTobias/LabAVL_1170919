@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Close";
+}
+
+<h2>Goodbye!</h2>
+
+<h4>Please enter the file to which you want to export the medicines inventory</h4>
+<p>Please ensure that you press the button "Upload" after selecting the file</p>
+@using (Html.BeginForm("Close", "Medicine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <br />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+}

@@ -96,6 +96,7 @@ namespace LabAVL_1170919.Controllers
                     line = streamReader.ReadLine();
                     medicineData = new List<string>();
                 }
+                streamReader.Close();
                 return RedirectToAction("ClientInfoInput");
             }
             catch
@@ -176,10 +177,21 @@ namespace LabAVL_1170919.Controllers
             {
                 page = 1;
             }
+            var medList = new List<MedicineModel>();
+            foreach (var med in list)
+            {
+                foreach (var item in Storage.Instance.medicineList)
+                {
+                    if (med.Id == item.Id)
+                    {
+                        medList.Add(item);
+                    }
+                }
+            }
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(list.ToPagedList(pageNumber, pageSize));
+            return View(medList.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult AddToCart(int id)
@@ -220,10 +232,12 @@ namespace LabAVL_1170919.Controllers
                 };
                 Storage.Instance.binaryTree.TakeMed(medicine, TreeMedicine.CompareByName);
             }
-            TreeMedicine newmedicine = new TreeMedicine()
+            MedicineModel newmedicine = new MedicineModel()
             {
                 Id = Storage.Instance.medicineList[id - 1].Id,
                 Name = Storage.Instance.medicineList[id - 1].Name,
+                Producer = Storage.Instance.medicineList[id -1].Producer,
+                Price = Storage.Instance.medicineList[id -1].Price,
                 Stock = ordered
             };
             Storage.Instance.orders[Storage.Instance.actualClient].Medicines.Add(newmedicine);
@@ -234,6 +248,29 @@ namespace LabAVL_1170919.Controllers
         public ActionResult ShowOrder()
         {
             return View(Storage.Instance.orders[Storage.Instance.actualClient]);
+        }
+
+        public ActionResult Close()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Close(HttpPostedFileBase file)
+        {
+            StreamWriter streamWriter = new StreamWriter(file.FileName);
+            //sobreescribir las cosas
+            string line = "";
+            foreach (var med in Storage.Instance.medicineList)
+            {
+                line = med.Id + "," + med.Name + "," + med.Description + "," + med.Producer + "," + med.Price + "," + med.Stock;
+            }
+            streamWriter.Close();
+            return Content(@"<body>
+                       <script type='text/javascript'>
+                         window.close();
+                       </script>
+                     </body> ");
         }
     }
 }

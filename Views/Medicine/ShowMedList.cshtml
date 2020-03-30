@@ -1,5 +1,5 @@
-﻿@*@model IEnumerable<LabAVL_1170919.Models.TreeMedicine>*@
-@model PagedList.IPagedList<LabAVL_1170919.Models.TreeMedicine>
+﻿@*@model IEnumerable<LabAVL_1170919.Models.MedicineModel>*@
+@model PagedList.IPagedList<LabAVL_1170919.Models.MedicineModel>
 
 @{
     ViewBag.Title = "Medicines List";
@@ -28,10 +28,19 @@
     value = "Search"/>  
 }
 
-<table class="table">
+<table class="table" style="width:100%">
     <tr>
-        <th>
+        <th style="width:20%">
             @Html.DisplayNameFor(model => model.First().Name)
+        </th>
+        <th style="width:25%">
+            @Html.DisplayNameFor(model => model.First().Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Producer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Price)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.First().Stock)
@@ -44,6 +53,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Producer)
+            </td>
+            <td>
+                Q @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Stock)

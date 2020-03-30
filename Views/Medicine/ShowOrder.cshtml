@@ -50,7 +50,16 @@
                 @Html.DisplayNameFor(model => model.Medicines.First().Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Medicines.First().Description)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.Medicines.First().Producer)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Medicines.First().Stock)
+            </th>
+            <th>
+                Q @Html.DisplayFor(model => model.Medicines.First().Price)
             </th>
             <th></th>
         </tr>
@@ -62,7 +71,16 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producer)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+                <td>
+                    Q @Html.DisplayFor(modelItem => item.Price)
                 </td>
             </tr>
         }
@@ -71,5 +89,6 @@
 
 </div>
 <p>
-    @Html.ActionLink("Back to List", "ShowMedList")
+    @Html.ActionLink("Back to List", "ShowMedList") | @Html.ActionLink("Close App", "Close")
 </p>
+
