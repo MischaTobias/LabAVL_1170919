@@ -24,5 +24,6 @@ namespace LabAVL_1170919.Helpers
         public List<MedicineModel> medicineList = new List<MedicineModel>();
         public Dictionary<string, Client> orders = new Dictionary<string, Client>();
         public string actualClient;
+        public HttpPostedFileBase file;
     }
 }
