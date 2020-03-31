@@ -173,6 +173,7 @@
     <Content Include="Views\Medicine\ShowOrder.cshtml" />
     <Content Include="Views\Medicine\Close.cshtml" />
     <Content Include="Views\Medicine\End.cshtml" />
+    <Content Include="Views\Shared\PrevLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
