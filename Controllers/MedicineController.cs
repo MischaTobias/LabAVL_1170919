@@ -194,6 +194,7 @@ namespace LabAVL_1170919.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(medList.ToPagedList(pageNumber, pageSize));
+            //Obtenido de https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application#add-paging
         }
 
         public ActionResult AddToCart(int id)
@@ -204,6 +205,7 @@ namespace LabAVL_1170919.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id, FormCollection collection)
         {
+            //Obtenido de https://stackoverflow.com/questions/43561214/display-error-message-on-the-view-from-controller-asp-net-mvc-5
             var med = Storage.Instance.medicineList[id - 1].Stock;
             if (collection["Stock"] == "")
             {
@@ -259,6 +261,7 @@ namespace LabAVL_1170919.Controllers
 
         public FileResult Export()
         {
+            //Obtenido de https://www.aspsnippets.com/Articles/Export-to-CSV-in-ASPNet-MVC.aspx
             var data = new StringBuilder();
             data.AppendLine("Id,Name,Description,Producer,Price,Stock");
             foreach (var med in Storage.Instance.medicineList)
