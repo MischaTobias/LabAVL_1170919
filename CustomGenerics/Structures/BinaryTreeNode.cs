@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomGenerics.Structures
 {
-    public class BinaryTreeNode<T> 
+    public class BinaryTreeNode<T> where T : IComparable
     {
         public BinaryTreeNode<T> LeftSon { get; set; }
         public BinaryTreeNode<T> RightSon { get; set; }

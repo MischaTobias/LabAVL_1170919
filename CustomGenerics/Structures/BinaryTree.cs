@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CustomGenerics.Structures
 {
-    public class BinaryTree<T> : IDataStructureBase<T>
+    public class BinaryTree<T> : IDataStructureBase<T> where T : IComparable
     {
         public BinaryTreeNode<T> root = null;
         private List<BinaryTreeNode<T>> returningList = new List<BinaryTreeNode<T>>();
